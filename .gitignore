@@ -4,3 +4,8 @@ jspm_packages
 
 # Serverless directories
 .serverless
+
+# Intellij
+.idea/
+*.iml
+*.iws
