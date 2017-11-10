@@ -18,10 +18,7 @@ module.exports.hello = (event, context, callback) => {
 module.exports.get_votes = (event, context, callback) => {
   const response = {
     statusCode: 200,
-    body: JSON.stringify({
-      message: 'Get votes',
-      input: event,
-    }),
+    body: JSON.stringify({votes: {yes: 3, no: 2}}),
   };
 
   console.log('lkjqslfjqsdlfjqsldkfjqsdlfkjqsdfk')
