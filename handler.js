@@ -1,10 +1,11 @@
 'use strict';
-module.exports.get_votes = (event, context, callback) => {
 
-  // Load the AWS SDK for Node.js
-  var AWS = require('aws-sdk');
-  // Set the region 
-  AWS.config.update({region: 'eu-west-1'});
+// Load the AWS SDK for Node.js
+var AWS = require('aws-sdk');
+// Set the region 
+AWS.config.update({region: 'eu-west-1'});
+
+module.exports.get_votes = (event, context, callback) => {
 
   // Create DynamoDB document client
   var docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
@@ -52,8 +53,29 @@ function onScan(err, data) {
 };
 
 
-module.exports.post_votes = (event, context, callback) => {
-  console.log('get_votes was called')
+module.exports.post_votes = (event, context, callback) => {  
+  const body = JSON.parse(event.body)
+  var params = {
+    TableName : 'poll-dev-votes',
+    Item: {
+       id: Math.random().toString(36).replace(/[^a-z]+/g, ''),
+       vote: body.vote,
+       name: body.name
+    }
+  };
+  
+  var documentClient = new AWS.DynamoDB.DocumentClient();
+  
+  documentClient.put(params, function(err, data) {
+    if (err) console.log(err);
+    else console.log(data);
+  });
+
+
+  console.log('post_votes was called')
+  console.log(event)
+  console.log(context)
+  console.log(params)
   const response = { statusCode: 201 };
   callback(null, response);
 };
