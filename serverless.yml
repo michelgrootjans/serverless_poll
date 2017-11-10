@@ -55,6 +55,19 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
+  get_votes:
+    handler: handler.get_votes
+    events:
+      - http:
+          path: /votes
+          method: get
+
+  post_votes:
+    handler: handler.post_votes
+    events:
+      - http:
+          path: /votes
+          method: post
   hello:
     handler: handler.hello
 
