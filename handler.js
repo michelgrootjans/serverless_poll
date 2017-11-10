@@ -28,6 +28,15 @@ function onScan(err, data) {
            console.log(vote.vote)
         });
 
+        const votes = data.Items.reduce(function(accumulator, item){
+          const vote = item.vote;
+          if(!accumulator[vote]) {
+            accumulator[vote] = 0;
+          }
+          accumulator[vote]++;
+          return accumulator;
+        }, {});
+
         // continue scanning if we have more movies, because
         // scan can retrieve a maximum of 1MB of data
         if (typeof data.LastEvaluatedKey != "undefined") {
@@ -35,7 +44,7 @@ function onScan(err, data) {
             params.ExclusiveStartKey = data.LastEvaluatedKey;
             docClient.scan(params, onScan);
         } else {
-          callback(null, {statusCode: 200, body: JSON.stringify(data, null, 2)});          
+          callback(null, {statusCode: 200, body: JSON.stringify({votes: votes}, null, 2)});          
         }
         
     }
