@@ -10,16 +10,15 @@ function renderResult(label, value) {
   resultsList.appendChild(valueElement);
 }
 
-fetch('https://sp7kadttf3.execute-api.eu-west-1.amazonaws.com/dev/votes', {
-  mode: 'no-cors'
-})
-  .then(results => {
-    console.log(results);
-
-    renderResult('Yes', 10);
-    renderResult('No', 5);
-
+fetch('https://dsvvyynae1.execute-api.eu-west-1.amazonaws.com/dev/votes')
+  .then(response => response.json())
+  .then(response => {
+    Object
+      .keys(response.votes)
+      .forEach(key => {
+        renderResult(key, response.votes[key])
+      })
   })
   .catch(error => {
     console.error(error);
-  })
+  });

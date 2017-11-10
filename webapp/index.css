@@ -1,0 +1,19 @@
+body {
+    background-color: salmon;
+}
+
+button {
+    background: transparent;
+    border: 0 none;
+    font-size: 50px;
+    cursor: pointer;
+}
+
+.container {
+    margin: 0 auto;
+    width: 5%;
+    min-width: 200px;
+    background-color: white;
+    padding: 25px;
+    text-align: center;
+}
