@@ -24,6 +24,7 @@ functions:
       - http:
           path: /votes
           method: get
+          cors: true
 
   post_votes:
     handler: handler.post_votes
@@ -31,6 +32,7 @@ functions:
       - http:
           path: /votes
           method: post
+          cors: true
 
 resources:  # CloudFormation template syntax
   Resources:
