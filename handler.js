@@ -45,7 +45,13 @@ function onScan(err, data) {
             params.ExclusiveStartKey = data.LastEvaluatedKey;
             docClient.scan(params, onScan);
         } else {
-          callback(null, {statusCode: 200, body: JSON.stringify({votes: votes}, null, 2)});          
+          callback(null, {
+            statusCode: 200, 
+            headers: {
+              "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+              "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
+            },
+            body: JSON.stringify({votes: votes}, null, 2)});          
         }
         
     }
@@ -76,6 +82,12 @@ module.exports.post_votes = (event, context, callback) => {
   console.log(event)
   console.log(context)
   console.log(params)
-  const response = { statusCode: 201 };
+  const response = { 
+    statusCode: 201,
+    headers: {
+      "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+      "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
+    }
+};
   callback(null, response);
 };
