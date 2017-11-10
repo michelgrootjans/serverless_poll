@@ -25,13 +25,6 @@ functions:
           path: /votes
           method: get
 
-  get_votes_2: # for testing purposes
-    handler: handler.get_votes_2
-    events:
-      - http:
-          path: /votes2
-          method: get
-
   post_votes:
     handler: handler.post_votes
     events:
