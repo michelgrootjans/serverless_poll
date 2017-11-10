@@ -10,28 +10,37 @@ module.exports.get_votes_2 = (event, context, callback) => {
   var docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 
   var params = {
-    TableName: 'poll-dev'
-  };
+    TableName: "poll-dev-votes",
+    ProjectionExpression: "vote"
+};
 
-  var response = {};
+console.log("Scanning Movies table.");
+docClient.scan(params, onScan);
 
-  docClient.get(params, function(err, data) {
+function onScan(err, data) {
     if (err) {
-      response = {
-        statusCode: 500
-      };
-      console.log("Error", err);
-    } else {
-      response = {
-        statusCode: 200,
-        body: JSON.stringify({votes: {yes: 3, no: 2}}),
-      };
-      console.log("Success", data.Item);
+        console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+        callback(null, {statusCode: 500, body: JSON.stringify(err, null, 2)});          
+      } else {
+        // print all the movies
+        console.log("Scan succeeded.");
+        data.Items.forEach(function(vote) {
+           console.log(vote.vote)
+        });
+
+        // continue scanning if we have more movies, because
+        // scan can retrieve a maximum of 1MB of data
+        if (typeof data.LastEvaluatedKey != "undefined") {
+            console.log("Scanning for more...");
+            params.ExclusiveStartKey = data.LastEvaluatedKey;
+            docClient.scan(params, onScan);
+        } else {
+          callback(null, {statusCode: 200, body: JSON.stringify(data, null, 2)});          
+        }
+        
     }
-  });
+}
 
-
-  callback(null, response);
 
   // Use this code if you don't use the http event with the LAMBDA-PROXY integration
   // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });

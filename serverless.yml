@@ -46,14 +46,10 @@ resources:  # CloudFormation template syntax
       Properties:
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
         AttributeDefinitions:
-          - AttributeName: vote
-            AttributeType: S
-          - AttributeName: name
-            AttributeType: S
-          - AttributeName: timestamp
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: vote
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
